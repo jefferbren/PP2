@@ -111,8 +111,8 @@ Node *newResource(Resource item){
 	node->resource.code=item.code;
 	strcpy(node->resource.name, item.name);
 	strcpy(node->resource.type, item.type);
-	strcpy(node->resource.load, item.load);
-	node.Resource.size= item.size;
+	node->resource.load = item.load;
+	strcpy(node->resource.size,item.size);
 	strcpy(node->resource.leader, item.leader);
 	
 	node->next= NULL;
@@ -291,7 +291,7 @@ void addChores(List *list, Chores item){
 	{
 		//Inserta al start de la list
 		list->start = newChores(item);
-    list.range++;
+        list->range++;
 		return;
 	}
 	n = list->start;
@@ -567,7 +567,7 @@ void addChoresMenu(List *list){
     printf("\n\tADD TASKS\n");
     fflush(stdin);
     while(run == 1){
-        if(list.range > 20){
+        if(list->range > 20){
           printf("you have passed the limit of tasks");
           break;
         }
@@ -682,9 +682,7 @@ void ResourceMenu(List *list1){
 		
 		printf("Enter resource capacity: ");
 		fflush(stdin);
-		fgets(entry, sizeof entry, stdin);
-		entry[strcspn(entry, "\n")];
-		strcpy(item.load, entry);
+		scanf("%d",item.load);
 		
 		printf("Enter the quantity available: ");
 		fflush(stdin);
@@ -707,14 +705,12 @@ void ResourceMenu(List *list1){
 
 }
 
-void addRecordMenu(List *list, int id){
+void addRecordMenu(Node *chores){
   char userInput[300];
   Record item;
   int run = 1;
-  Node *aux;
-  aux = searchChores(list, id);
 
-  printf("\n\tADD Document\n");
+  printf("\n\tADD DOCUMENT\n");
   fflush(stdin);
   while(run == 1){
     
@@ -723,7 +719,7 @@ void addRecordMenu(List *list, int id){
     if(item.id == 0){
     printf("Error, the id can't be 0");
     }
-    if(existRecord(aux->data.Tree->root,item.id)==1){
+    if(existRecord(chores->data.Tree->root,item.id)==1){
       printf("Error, currently there is a document with that id\n");
       continue;
     }
@@ -746,31 +742,32 @@ void addRecordMenu(List *list, int id){
     userInput[strcspn(userInput, "\n")] = 0;
     strcpy(item.route, userInput);
 
-    addRecord(aux->data.Tree,item);
+    addRecord(chores->data.Tree,item);
     printRec(item);
     printf("\nDo you want add another document? \n0. No \n1. yes\n\n");
     scanf("%d", &run);
   }
-  showTree(aux->data.Tree.root);
+  showTree(chores->data.Tree->root);
 }
 
 
 
 void recordsEdit(List *list){
   int run = 1,option,code;
+  Node *aux;
 
   while(run ==1){
     printf("\n\tDOCUMENTS MANAGE \n");
     printf("Please enter an id: ");
     scanf("%d",&code);
     if(existChores(list, code) == 1){
-
+      aux = searchChores(list, code);
       printf("\nPlease choose an option: \n");
       printf("1. Add document \n2. Modify document\n3. Delete document \n4. Show Documents \n5. Return to main manu\n");
       scanf("%d", &option);
       switch (option){
       case 1:
-        addRecordMenu(list, code);
+        addRecordMenu(aux);
         break;
       case 2:
         break;
@@ -831,4 +828,3 @@ int main() {
 
   return 0;
 }
-
