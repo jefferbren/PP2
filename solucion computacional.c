@@ -85,7 +85,7 @@ void modChores(List *list, int code,Chores input,int action);
 void showItemChores(const List *list,int id);
 void showTree(Leaf *tree);
 void printRec(Record rec);
-
+void modifyRecordMenu(Tree *tree);
 
 Node *newChores(Chores item){
   Node *node =(Node *)malloc(sizeof(Node));
@@ -705,6 +705,203 @@ void ResourceMenu(List *list1){
 
 }
 
+
+Leaf* searchTree(Leaf *tree, int id)
+{
+	Leaf *aux = tree;
+	
+	if(aux != NULL)
+	{
+		if(id < aux->data.id){
+			searchTree(aux->left, id);
+		}
+		else if(id > aux->data.id){
+			searchTree(aux->right, id);
+		}
+		else
+			return aux;	
+	}
+	else
+		return NULL;	
+}
+
+Leaf* searchPrev(Leaf *tree, Leaf *prev, int id)
+{
+	Leaf *aux = tree;
+	
+	if(aux != NULL)
+	{
+		if(id < aux->data.id){
+      prev = aux;
+			searchPrev(aux->left,prev,id);
+		}
+		else if(id > aux->data.id){
+      prev = aux;
+			searchPrev(aux->right,prev , id);
+		}
+		else
+			return prev;	
+	}
+	else
+		return NULL;	
+}
+
+Leaf *minimum(Leaf *node){
+    Leaf *min;
+    min = node;
+    while(min->left != NULL){
+        min = min->left;
+    }
+    if(min != NULL){
+        return min;
+    }
+    else{
+        return NULL;
+    }
+
+
+}
+Leaf *deleteRecord(Leaf *root, int id)
+{
+	if (root == NULL) return root;
+	
+	// Para saber si es hacia la L (es menor)
+	if (id < root->data.id)
+		root -> left = deleteRecord(root -> left, id);
+	
+	// Para saber si es hacia la R (es mayor)
+	else if (id > root -> data.id)
+		root -> right = deleteRecord(root -> right, id);
+	
+	else
+	{
+		// Si es sencillo o sin hijos
+		if (root -> left == NULL)
+		{
+			Leaf *aux = root -> right;
+			free(root);
+			return aux;
+		}
+		
+		else if (root -> right == NULL)
+		{
+			Leaf *aux = root -> left;
+			free(root);
+			return aux;
+		}
+		// Si tiene dos hijos
+		Leaf* aux = minimum(root -> right);
+		
+		// Para copiar el id
+		root -> data.id = aux -> data.id;
+		// Para eliminar el id
+		root -> right = deleteRecord(root -> right, aux->data.id);
+	}
+	
+	return root;
+}
+
+
+void deleteRecordMenu(Tree *tree){
+  int id, run = 1;
+  Leaf *aux;
+  while(run == 1){
+    printf("\n\t--DELETE DOCUMENT--\n");
+    printf("\nPlease, enter an id for the document: ");
+    scanf("%d", &id);
+    
+    if(existRecord(tree->root,id)==1){
+      aux = searchTree(tree->root, id);
+      printf("\nThe document is: \n");
+      printRec(aux->data);
+      deleteRecord(tree->root,id);
+      printf("\nThe delete has been completed\n");
+
+      printf("\nDo you want delete another document? \n1. yes \n0. no\n");
+      scanf("%d", &run);
+    }
+    else{
+      printf("\nError, that document doesn't\n");
+      continue;
+    }
+  }
+
+}
+
+
+void modifyRecordMenu(Tree *tree){
+  int option,code, run = 1;
+  char input[300];
+  Leaf *aux;
+
+  while(run == 1){
+    printf("\n\t--MODIFY DOCUMENT--\n");
+    printf("\n--Please, choose an option--\n");
+    printf("1- Modify path\n");
+    printf("2- Modify description\n");
+    printf("3- Modify type\n");
+    printf("4- Return\n");
+    scanf("%d", &option);
+    if(option == 4){
+      break;
+    }
+    fflush(stdin);
+    printf("\nEnter the id\n");
+    scanf("%d", &code);
+    if(existRecord(tree->root, code) == 1){
+      switch (option)
+      {
+      case 1:
+        aux = searchTree(tree->root,code);
+        printf("\nThe document is: \n");
+        printRec(aux->data);
+        fflush(stdin);
+        printf("\nPlease, enter the new path: \n");
+        fgets(input, sizeof input, stdin);
+        input[strcspn(input, "\n")] = 0;
+        strcpy(aux->data.route,input);
+        
+        printf("The new document is: \n");
+        printRec(aux->data);
+        break;
+      case 2:
+        aux = searchTree(tree->root,code);
+        printf("\nThe document is: \n");
+        printRec(aux->data);
+        fflush(stdin);
+        printf("\nPlease, enter the new description: \n");
+        fgets(input, sizeof input, stdin);
+        input[strcspn(input, "\n")] = 0;
+        strcpy(aux->data.description,input);
+        
+        printf("The new document is: \n");
+        printRec(aux->data);
+        break;
+      case 3:
+        aux = searchTree(tree->root,code);
+        printf("\nThe document is: \n");
+        printRec(aux->data);
+        fflush(stdin);
+        printf("\nPlease, enter the new type: \n");
+        fgets(input, sizeof input, stdin);
+        input[strcspn(input, "\n")] = 0;
+        strcpy(aux->data.type,input);
+        
+        printf("The new document is: \n");
+        printRec(aux->data);
+        break;
+      default:
+        printf("\nError, Invalid option\n");
+        break;
+      }
+    }
+    else{
+      printf("\nError, document doesn't exist\n");
+    }
+  }
+}
+
+
 void addRecordMenu(Node *chores){
   char userInput[300];
   Record item;
@@ -787,14 +984,161 @@ void recordsEdit(List *list){
     }
   }
   
-
-
 }
 
+
+void printGraph(int graph[][20], int size, List *list){
+  int i, j;
+  Node *aux;
+  aux = list->start;
+  for (i = 0; i < size; i++) {
+    
+    printf("task %d: ", aux->data.id);
+    for (j = 0; j < size; j++) {
+      printf("%d ", graph[i][j]);
+    }
+    aux = aux->next;
+    printf("\n");
+  }
+}
+
+void addEdge(int graph[][20], int row, int column, int weight){
+  graph[row][column] =  weight;
+}
+
+void criticalPathMenu(List *list, int graph[][20]){
+  int run = 1,option,code,i;
+  int aux= list.range;
+  Node *chores1,*chores2;
+  printf("\n\tCritical Path\n");
+  while(run ==1){
+    printf("Please, Choose an option:\n1. add a critical path\n 2. show the graph\n 3. return\n");
+    scanf("%d", &option);
+
+    if(option == 1){
+      printf("Please, enter the id of the initial task: \n");
+      scanf("%d",&code);
+      if(existChores(list,code)==1){
+      chores1 = searchChores(list,code);
+      i=0;
+      while( i < aux-1){
+        printf("\nPlease, enter the id of the next task: \n");
+        scanf("%d",&code);
+        if(existChores(list,code)==1){
+          chores2 = searchChores(list, code);
+          addEdge(graph,chores1->data.vertex,chores2->data.vertex,chores2->data.difficulty);
+          chores1= chores2;
+          i++;
+        
+        }
+        else{
+          printf("\nError, the task doesn't exist\n");
+        }
+      }
+      }
+      else{
+        printf("\nError, the task doesn't exist\n");
+      }
+    }
+    else if(option == 2){
+      printGraph(graph, aux, list);
+    }
+    else if(option == 3){
+      break;
+    }
+    else{
+      printf("\nError, invalid option\n");
+    }
+  }
+}
+
+// A utility function to find the vertex with
+// minimum key value, from the set of vertices
+// not yet included in MST
+int minKey(int key[], int mstSet[], int range)
+{
+	// Initialize min value
+	int min = INT_MAX, min_index;
+	int v =0;
+	for (v = 0; v < range; v++){
+		if (mstSet[v] == 0 && key[v] < min){
+			min = key[v], min_index = v;
+    }
+  }
+
+	return min_index;
+}
+
+// A utility function to print the
+// constructed MST stored in parent[]
+int printMST(int parent[], int graph[20][20], int size)
+{
+	printf("Edge \tWeight\n");
+	int i =1;
+	for (i = 1; i < size; i++){
+		printf("%d - %d \t%d \n", parent[i], i,
+			graph[i][parent[i]]);
+  }
+}
+
+// Function to construct and print MST for
+// a graph represented using adjacency
+// matrix representation
+void primMST(int graph[20][20], int size)
+{
+	// Array to store constructed MST
+	int parent[size];
+	// Key values used to pick minimum weight edge in cut
+	int key[size];
+	// To represent set of vertices included in MST
+	int mstSet[size];
+
+	// Initialize all keys as INFINITE
+	int i =0;
+	for (i = 0; i < size; i++){
+		key[i] = INT_MAX, mstSet[i] = 0;
+  }
+	// Always include first 1st vertex in MST.
+	// Make key 0 so that this vertex is picked as first
+	// vertex.
+	key[0] = 0;
+	parent[0] = -1; // First node is always root of MST
+
+	// The MST will have V vertices
+	int count =0;
+	for (count = 0; count < size - 1; count++) {
+		// Pick the minimum key vertex from the
+		// set of vertices not yet included in MST
+		int u = minKey(key, mstSet, size);
+
+		// Add the picked vertex to the MST Set
+		mstSet[u] = 1;
+
+		// Update key value and parent index of
+		// the adjacent vertices of the picked vertex.
+		// Consider only those vertices which are not
+		// yet included in MST
+		int v=0;
+		for (v = 0; v < size; v++)
+
+			// graph[u][v] is non zero only for adjacent
+			// vertices of m mstSet[v] is false for vertices
+			// not yet included in MST Update the key only
+			// if graph[u][v] is smaller than key[v]
+			if (graph[u][v] && mstSet[v] == 0 && graph[u][v] < key[v]){
+				parent[v] = u, key[v] = graph[u][v];
+      }
+	}
+
+	// print the constructed MST
+	printMST(parent, graph, size);
+}
 
 int main() {
   int option;
   List *choresList, *resourcesList;
+  int graph[MAX][MAX];
+  nullMatrix(graph);
 	choresList = newList();
   	resourcesList = newList();
 	do{
@@ -815,9 +1159,9 @@ int main() {
     switch(option){
       case 1: addModChoresMenu(choresList); break;
       case 2: recordsEdit(choresList);break;
-
+	  case 3: criticalPathMenu(choresList.range, graph);break;
       case 4: ResourceMenu(resourcesList);break;
-
+      case 5: primMST(graph, choresList.range);break;
       case 0:
         exit(0); 
         break;
