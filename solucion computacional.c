@@ -7,7 +7,7 @@
 #include <string.h>
 #define MAX 20
 
-
+//STRUCTS
 typedef struct record{
 	int id;
 	char route[75];
@@ -66,6 +66,7 @@ Node *start;
 
 }List;
 
+//FUNCTIONS OF THE PRJECT
 List *newList();
 Tree *newTree();
 Node *newChores(Chores data);
@@ -74,7 +75,7 @@ void nMatrix(int matrix[][20]);
 Node *searchChores(List *list, int id);
 int currentChores(List *list,int choresId);
 void addModChoresMenu(List *list);
-void resourceMenu(List *list1);
+void ResourceMenu(List *list1);
 void addChoresMenu(List *list);
 void addChores(List *list, Chores item);
 void addRecord(Tree *tree, Record rec);
@@ -85,8 +86,62 @@ void modChores(List *list, int code,Chores input,int action);
 void showItemChores(const List *list,int id);
 void showTree(Leaf *tree);
 void printRec(Record rec);
+Leaf* searchTree(Leaf *tree, int id);
+Leaf* searchPrev(Leaf *tree, Leaf *prev, int id);
+Leaf *minimum(Leaf *node);
+Leaf *deleteRecord(Leaf *root, int id);
+void deleteRecordMenu(Tree *tree);
 void modifyRecordMenu(Tree *tree);
+void recordsEdit(List *list);
+void printGraph(int graph[][20], int size, List *list);
+void addEdge(int graph[][20], int row, int column, int weight);
+void criticalPathMenu(List *list, int graph[][20]);
+int minKey(int key[], int mstSet[], int range);
+int printMST(int parent[], int graph[20][20], int size);
+void primMST(int graph[20][20], int size);
+void nullMatrix(int matrix[][20]);
 
+//MAIN MENU
+int main() {
+  int option;
+  List *choresList, *resourcesList;
+  int graph[MAX][MAX];
+  nullMatrix(graph);
+	choresList = newList();
+  	resourcesList = newList();
+	do{
+    printf("\n\tAPTEC \n");
+    printf("\n");
+    printf("1- Add or modify chore\n");
+    printf("2- Manage records\n");
+    printf("3- Add a critical route\n");
+    printf("4- Add proyect resources\n");
+    printf("5- Work Breakdown Structure\n");
+    printf("6- Reccomended route(Fastest)\n");
+    printf("0- Exit \n");
+    printf("\nSelect an option and press Enter: ");
+    fflush(stdin);
+    scanf("%d", &option);
+
+
+    switch(option){
+      case 1: addModChoresMenu(choresList); break;
+      case 2: recordsEdit(choresList);break;
+	  case 3: criticalPathMenu(choresList, graph);break;
+      case 4: ResourceMenu(resourcesList);break;
+      case 5: primMST(graph, choresList->range);break;
+      case 0:
+        exit(0); 
+        break;
+      default: printf("Error, invalid option\n");
+    }
+    fflush(stdin);
+  }while(1);
+
+  return 0;
+}
+
+//FUNCTIONS FOR MAKE GRAPHS, NODES AND LISTS
 Node *newChores(Chores item){
   Node *node =(Node *)malloc(sizeof(Node));
   
@@ -706,8 +761,7 @@ void ResourceMenu(List *list1){
 }
 
 
-Leaf* searchTree(Leaf *tree, int id)
-{
+Leaf* searchTree(Leaf *tree, int id){
 	Leaf *aux = tree;
 	
 	if(aux != NULL)
@@ -725,8 +779,7 @@ Leaf* searchTree(Leaf *tree, int id)
 		return NULL;	
 }
 
-Leaf* searchPrev(Leaf *tree, Leaf *prev, int id)
-{
+Leaf* searchPrev(Leaf *tree, Leaf *prev, int id){
 	Leaf *aux = tree;
 	
 	if(aux != NULL)
@@ -1132,41 +1185,4 @@ void primMST(int graph[20][20], int size)
 	printMST(parent, graph, size);
 }
 
-int main() {
-  int option;
-  List *choresList, *resourcesList;
-  int graph[MAX][MAX];
-  nullMatrix(graph);
-	choresList = newList();
-  	resourcesList = newList();
-	do{
-    printf("\n\tAPTEC \n");
-    printf("\n");
-    printf("1- Add or modify chore\n");
-    printf("2- Manage records\n");
-    printf("3- Add a critical route\n");
-    printf("4- Add proyect resources\n");
-    printf("5- Work Breakdown Structure\n");
-    printf("6- Reccomended route(Fastest)\n");
-    printf("0- Exit \n");
-    printf("\nSelect an option and press Enter: ");
-    fflush(stdin);
-    scanf("%d", &option);
 
-
-    switch(option){
-      case 1: addModChoresMenu(choresList); break;
-      case 2: recordsEdit(choresList);break;
-	  case 3: criticalPathMenu(choresList, graph);break;
-      case 4: ResourceMenu(resourcesList);break;
-      case 5: primMST(graph, choresList->range);break;
-      case 0:
-        exit(0); 
-        break;
-      default: printf("Error, invalid option\n");
-    }
-    fflush(stdin);
-  }while(1);
-
-  return 0;
-}
