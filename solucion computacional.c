@@ -221,7 +221,7 @@ void showList(const List *list, int action){
       for(aux = list->start; aux!= NULL; aux = aux->next){
       
         printf("Resource: %d", i);
-        printf("\nID: %d \n", aux->resource.code);
+        printf("\nId: %d \n", aux->resource.code);
         printf("Name: %s \n", &aux->resource.name);
         printf("Type: %s \n", &aux->resource.type);
         printf("Load: %s \n", &aux->resource.load);
@@ -236,7 +236,7 @@ void showList(const List *list, int action){
 	  
   }
   else{
-    printf("Error, invalid action");
+    printf("Error, try again");
   }
   printf("\n");
   
@@ -269,15 +269,15 @@ void showItemChores(const List *list, int id){
         aux = aux->next;
     }
     if(aux == NULL){
-        printf("No se encontro la postal");
+        printf("Chore not found");
     }
     else{
         printf("\n--Id: %d \n", aux->data.id);
-        printf("--Description:\n %s \n", &aux->data.description);
-        printf("--Type: %s \n", &aux->data.type);
-        printf("--Difficult: %d \n", aux->data.difficulty);
-        printf("--Time: %d \n", aux->data.time);
-        printf("--leader: %s \n", aux->data.leader);
+        printf("Description:\n %s \n", &aux->data.description);
+        printf("Type: %s \n", &aux->data.type);
+        printf("Difficulty: %d \n", aux->data.difficulty);
+        printf("Time: %d \n", aux->data.time);
+        printf("leader: %s \n", aux->data.leader);
         printf("\n");
         fflush(stdin);
     }
@@ -393,7 +393,7 @@ void modChores(List *list, int code,Chores input,int action){
         fflush(stdin);
     }
     else{
-        printf("Error, action incorrecta");
+        printf("Error, invalid action");
     }
 }
 
@@ -408,21 +408,21 @@ void modChoresMenu(List *list){
   do{
     printf("\n----\n");
     
-    printf("\n--Please choose an option--\n");
-    printf("1- Change description\n");
-    printf("2- Change type\n");
-    printf("3- Change difficult\n");
-    printf("4- Change time required\n");
-    printf("5- Change manager\n");
-    printf("6- Exit\n");
+    printf("\nSelect a number and press Enter\n");
+    printf("1.Modify description\n");
+    printf("2.Modify type\n");
+    printf("3.Modify difficulty\n");
+    printf("4.Modify time required\n");
+    printf("5.Modify leader\n");
+    printf("6.Exit\n");
     scanf("%d", &option);
     switch (option)
     {
     case 1:
       fflush(stdin);
-      printf("\nEnter the ID of the task: \n");
+      printf("\nEnter the Id of the chore to modify: \n");
       scanf("%d", &id);
-      printf("\nThe task is: \n");
+      printf("\nThe actual chore is: \n");
       showItemChores(list, id);
       if(existChores(list, id) == 1){
         fflush(stdin);
@@ -431,108 +431,108 @@ void modChoresMenu(List *list){
         userInput[strcspn(userInput, "\n")] = 0;
         strcpy(item.description, userInput);
         modChores(list,id,item,1);
-        printf("The new task is: \n");
+        printf("The chore modify is: \n");
         showItemChores(list,id);
       }
       else{
-        printf("\nError, The ID doesn't exist\n");
+        printf("\nError, id not found\n");
       }
 
       break;
     case 2:
       fflush(stdin);
-      printf("\nEnter the ID of the task: \n");
+      printf("\nEnter the Id of the chore to modify: \n");
       scanf("%d", &id);
-      printf("\nThe task is: \n");
+      printf("\nThe actual chore is: \n");
       showItemChores(list, id);
       if(existChores(list, id) == 1){
         fflush(stdin);
-        printf("Please, choose the type of the task:\n1. Operative task \n2. Aprobation task \n3. Contract signature \
-          \n4. Management task \n5. Changes\n");
+        printf("Please, select the new type:\n1.Operative chore \n2. Aprobation chore \n3. Contract signature \
+          \n4. Management chore \n5. Changes\n");
         scanf("%d", &type);
         if(type == 1){
-          strcpy(item.type, "Operative task");
+          strcpy(item.type, "Operative chore");
         }
         else if(type == 2){
-          strcpy(item.type, "Aprobation task");
+          strcpy(item.type, "Aprobation chore");
         }
         else if(type == 3){
           strcpy(item.type, "Contract signature");
         }
         else if(type == 4){
-          strcpy(item.type, "Management task");
+          strcpy(item.type, "Management chore");
         }
         else if(type == 5){
           strcpy(item.type, "Changes");
         }
         else{
-          printf("Error, invalid type");
+          printf("Error, invalid selection");
           continue;
         }
         modChores(list,id,item,2);
-        printf("The new task is: \n");
+        printf("The new chore is: \n");
         showItemChores(list,id);
       }
       else{
-        printf("\nError, The ID doesn't exist\n");
+        printf("\nError, id not found");
       }
       break;
     case 3:
       fflush(stdin);
-      printf("\nEnter the ID of the task: \n");
+      printf("\nEnter the Id of the chore: \n");
       scanf("%d", &id);
-      printf("\nThe task is: \n");
+      printf("\nThe actual chore is: \n");
       showItemChores(list, id);
       if(existChores(list, id) == 1){
         fflush(stdin);
-        printf("\nEnter the new difficult: \n");
+        printf("\nEnter the new difficulty: \n");
         scanf("%d", &item.difficulty);
         modChores(list,id,item,3);
-        printf("The new task is: \n");
+        printf("The modify chore is: \n");
         showItemChores(list,id);
       }
       else{
-        printf("\nError, The ID doesn't exist\n");
+        printf("\nError, id not found\n");
       }
 
       break;
     case 4:
       fflush(stdin);
-      printf("\nEnter the ID of the task: \n");
+      printf("\nEnter the Id of the chore: \n");
       scanf("%d", &id);
-      printf("\nThe task is: \n");
+      printf("\nThe actual chore is: \n");
       showItemChores(list, id);
       if(existChores(list, id) == 1){
         fflush(stdin);
-        printf("\nWhat's the time required for the task? \n");
+        printf("\nEnter the new time required for the chore \n");
         scanf("%d", &item.time);
         modChores(list,id,item,4);
-        printf("The new task is: \n");
+        printf("The new chore is: \n");
         showItemChores(list,id);
       }
       else{
-        printf("\nError, The ID doesn't exist\n");
+        printf("\nError, id not found\n");
       }
 
       break;
     case 5:
       fflush(stdin);
-      printf("\nEnter the ID of the task: \n");
+      printf("\nEnter the Id of the chore: \n");
       scanf("%d", &id);
-      printf("\nThe task is: \n");
+      printf("\nThe actual chore is: \n");
       showItemChores(list, id);
       if(existChores(list, id) == 1){
         fflush(stdin);
-        printf("\nWho's the new leader? \n");
+        printf("\nEnter the new leader \n");
         fgets(userInput, sizeof userInput, stdin);
         userInput[strcspn(userInput, "\n")] = 0;
         strcpy(item.leader, userInput);
         modChores(list,id,item,5);
-        printf("The new task is: \n");
+        printf("The new chore is: \n");
         showItemChores(list,id);
       }
       else{
-        printf("\nError, The ID doesn't exist\n");
+        printf("\nError, id not found\n");
       }
 
       break;
@@ -564,44 +564,44 @@ void addChoresMenu(List *list){
     int type;
     int run = 1;
 
-    printf("\n\tADD TASKS\n");
+    printf("\n\tNEW CHORES\n");
     fflush(stdin);
     while(run == 1){
         if(list->range > 20){
-          printf("you have passed the limit of tasks");
+          printf("One project only use a maximum of 20 chores");
           break;
         }
-        printf("\nPlease, enter an id for the task: ");
+        printf("\nEnter the id for the chore: ");
         scanf("%d", &item.id);
         if(item.id == 0){
-        printf("Error, the id can't be 0");
+        printf("Error, 0 cannot be an id");
         }
         if(existChores(list,item.id)==1){
-        printf("Error, currently there is a task with that id");
+        printf("Error, the id already exist");
         continue;
         }
         fflush(stdin);
-        printf("Please, enter a description: ");
+        printf("Enter a description: ");
         // For read the input with spaces
         fgets(userInput, sizeof userInput, stdin);
         userInput[strcspn(userInput, "\n")] = 0;
         // for copy the element
         strcpy(item.description, userInput);
         fflush(stdin);
-        printf("Please, choose the type of the task:\n1. Operative task \n2. Aprobation task \n3. Contract signature \
-          \n4. Management task \n5. Changes\n");
+        printf("Please, select the new type:\n1.Operative chore \n2. Aprobation chore \n3. Contract signature \
+          \n4. Management chore \n5. Changes\n");
         scanf("%d", &type);
         if(type == 1){
-          strcpy(item.type, "Operative task");
+          strcpy(item.type, "Operative chore");
         }
         else if(type == 2){
-          strcpy(item.type, "Aprobation task");
+          strcpy(item.type, "Aprobation chore");
         }
         else if(type == 3){
           strcpy(item.type, "Contract signature");
         }
         else if(type == 4){
-          strcpy(item.type, "Management task");
+          strcpy(item.type, "Management chore");
         }
         else if(type == 5){
           strcpy(item.type, "Changes");
@@ -610,19 +610,19 @@ void addChoresMenu(List *list){
           printf("Error, invalid type\n");
           continue;
         }
-        printf("In the scale 1 to 100, How difficult is this task?: ");
+        printf("What is the difficulty from 1 to 10?: ");
         scanf("%d", &item.difficulty);
         printf("Please, enter the time required for the task(in minutes): ");
         scanf("%d", &item.time);
         fflush(stdin);
-        printf("Who is the manager of this task?: ");
+        printf("Who is the leader of the chore?: ");
         fgets(userInput, sizeof userInput, stdin);
         userInput[strcspn(userInput, "\n")] = 0;
         strcpy(item.leader, userInput);
 
         addChores(list,item);
         
-        printf("Do you want add another task? \n0. No \n1. yes\n\n");
+        printf("Do you want add more chores? \n0.No \n1.Yes\n\n");
         scanf("%d", &run);
   }
   showList(list, 1);
@@ -634,7 +634,7 @@ void addModChoresMenu(List *list){
 
   while(run ==1){
     printf("\nPlease choose an option: \n");
-    printf("1. Add task \n2. Modify task \n3. Show tasks \n4. Return to main manu\n");
+    printf("1. Add Chores \n2. Modify chores \n3. Show chores \n4. Exit\n");
     scanf("%d", &option);
     switch (option){
     case 1:
@@ -660,11 +660,11 @@ void ResourceMenu(List *list1){
 	char entry[50];
 	int run = 1;
 	
-	printf("\n\tAdd Project Resource \n");
+	printf("\n\tAdd Resources \n");
 	fflush(stdin);
 	
 	while(run == 1){
-	    printf("Enter ID: ");
+	    printf("Enter code: ");
 		fflush(stdin);
 		scanf("%d", &item.code);
 		
@@ -674,17 +674,17 @@ void ResourceMenu(List *list1){
 		entry[strcspn(entry, "\n")];
 		strcpy(item.name, entry);
 		
-		printf("Write the resource type: ");
+		printf("Enter the resource type: ");
 		fflush(stdin);
 		fgets(entry, sizeof entry, stdin);
 		entry[strcspn(entry, "\n")];
 		strcpy(item.type, entry);
 		
-		printf("Enter resource capacity: ");
+		printf("Enter resource load: ");
 		fflush(stdin);
 		scanf("%d",item.load);
 		
-		printf("Enter the quantity available: ");
+		printf("Enter the size of the resource: ");
 		fflush(stdin);
 		scanf("%d", &item.size);
 		
@@ -697,7 +697,7 @@ void ResourceMenu(List *list1){
 		
 		addResource(list1, item);
 		
-		printf("\nDo you want to add another project resource? \n0: No \n1: Yes\n");
+		printf("\nDo you want add more resouces? \n0.No \n1.Yes\n");
 		scanf("%d", &run);
 		
 	}
@@ -806,22 +806,22 @@ void deleteRecordMenu(Tree *tree){
   int id, run = 1;
   Leaf *aux;
   while(run == 1){
-    printf("\n\t--DELETE DOCUMENT--\n");
-    printf("\nPlease, enter an id for the document: ");
+    printf("\n\tDELETE RECORD\n");
+    printf("\nEnter the id of the record: ");
     scanf("%d", &id);
     
     if(existRecord(tree->root,id)==1){
       aux = searchTree(tree->root, id);
-      printf("\nThe document is: \n");
+      printf("\nThe record to delete is: \n");
       printRec(aux->data);
       deleteRecord(tree->root,id);
       printf("\nThe delete has been completed\n");
 
-      printf("\nDo you want delete another document? \n1. yes \n0. no\n");
+      printf("\nDo you want delete another record? \n1. yes \n0. no\n");
       scanf("%d", &run);
     }
     else{
-      printf("\nError, that document doesn't\n");
+      printf("\nError, id not found\n");
       continue;
     }
   }
@@ -835,9 +835,9 @@ void modifyRecordMenu(Tree *tree){
   Leaf *aux;
 
   while(run == 1){
-    printf("\n\t--MODIFY DOCUMENT--\n");
-    printf("\n--Please, choose an option--\n");
-    printf("1- Modify path\n");
+    printf("\n\tMODIFY RECORD\n");
+    printf("\nEnter an opcion\n");
+    printf("1- Modify route\n");
     printf("2- Modify description\n");
     printf("3- Modify type\n");
     printf("4- Return\n");
@@ -846,57 +846,57 @@ void modifyRecordMenu(Tree *tree){
       break;
     }
     fflush(stdin);
-    printf("\nEnter the id\n");
+    printf("\nEnter the code\n");
     scanf("%d", &code);
     if(existRecord(tree->root, code) == 1){
       switch (option)
       {
       case 1:
         aux = searchTree(tree->root,code);
-        printf("\nThe document is: \n");
+        printf("\nThe actual record is: \n");
         printRec(aux->data);
         fflush(stdin);
-        printf("\nPlease, enter the new path: \n");
+        printf("\nEnter the new route: \n");
         fgets(input, sizeof input, stdin);
         input[strcspn(input, "\n")] = 0;
         strcpy(aux->data.route,input);
         
-        printf("The new document is: \n");
+        printf("The new record is: \n");
         printRec(aux->data);
         break;
       case 2:
         aux = searchTree(tree->root,code);
-        printf("\nThe document is: \n");
+        printf("\nThe actual record is: \n");
         printRec(aux->data);
         fflush(stdin);
-        printf("\nPlease, enter the new description: \n");
+        printf("\nEnter the new description: \n");
         fgets(input, sizeof input, stdin);
         input[strcspn(input, "\n")] = 0;
         strcpy(aux->data.description,input);
         
-        printf("The new document is: \n");
+        printf("The new record is: \n");
         printRec(aux->data);
         break;
       case 3:
         aux = searchTree(tree->root,code);
-        printf("\nThe document is: \n");
+        printf("\nThe record is: \n");
         printRec(aux->data);
         fflush(stdin);
-        printf("\nPlease, enter the new type: \n");
+        printf("\nEnter the new type: \n");
         fgets(input, sizeof input, stdin);
         input[strcspn(input, "\n")] = 0;
         strcpy(aux->data.type,input);
         
-        printf("The new document is: \n");
+        printf("The new record is: \n");
         printRec(aux->data);
         break;
       default:
-        printf("\nError, Invalid option\n");
+        printf("\nError, invalid option\n");
         break;
       }
     }
     else{
-      printf("\nError, document doesn't exist\n");
+      printf("\nError, the record doesn't exist\n");
     }
   }
 }
@@ -907,17 +907,17 @@ void addRecordMenu(Node *chores){
   Record item;
   int run = 1;
 
-  printf("\n\tADD DOCUMENT\n");
+  printf("\n\tADD RECORD\n");
   fflush(stdin);
   while(run == 1){
     
-    printf("\nPlease, enter an id for the document: ");
+    printf("\nEnter id for the document: ");
     scanf("%d", &item.id);
     if(item.id == 0){
-    printf("Error, the id can't be 0");
+    printf("Error, 0 cannot be an id");
     }
     if(existRecord(chores->data.Tree->root,item.id)==1){
-      printf("Error, currently there is a document with that id\n");
+      printf("Error, the id already exist\n");
       continue;
     }
     fflush(stdin);
@@ -928,12 +928,12 @@ void addRecordMenu(Node *chores){
     // for copy the element
     strcpy(item.description, userInput);
     fflush(stdin);
-    printf("\nPlease, enter the type of the document: ");
+    printf("\nEnter the type of the record: ");
     fgets(userInput, sizeof userInput, stdin);
     userInput[strcspn(userInput, "\n")] = 0;
     strcpy(item.type, userInput);
     
-    printf("\nPlease, enter a path for the document: ");
+    printf("\nEnter a route for the document: ");
     fflush(stdin);
     fgets(userInput, sizeof userInput, stdin);
     userInput[strcspn(userInput, "\n")] = 0;
@@ -941,7 +941,7 @@ void addRecordMenu(Node *chores){
 
     addRecord(chores->data.Tree,item);
     printRec(item);
-    printf("\nDo you want add another document? \n0. No \n1. yes\n\n");
+    printf("\nDo you want add more records? \n0.No \n1.Yes\n\n");
     scanf("%d", &run);
   }
   showTree(chores->data.Tree->root);
@@ -954,18 +954,17 @@ void recordsEdit(List *list){
   Node *aux;
 
   while(run ==1){
-    printf("\n\tDOCUMENTS MANAGE \n");
-    printf("Please enter an id: ");
+    printf("\n\tRECORDS MANAGE \n");
+    printf("Enter the code: ");
     scanf("%d",&code);
     if(existChores(list, code) == 1){
       aux = searchChores(list, code);
-      printf("\nPlease choose an option: \n");
-      printf("1. Add document \n2. Modify document\n3. Delete document \n4. Show Documents \n5. Return to main manu\n");
+      printf("\nSelect number and press Enter: \n");
+      printf("1.Add record \n2.Modify record\n3.Delete record \n4.Show records \n5.Exit\n");
       scanf("%d", &option);
       switch (option){
       case 1:
-        addRecordMenu(aux);
-        break;
+        addRecordMenu(aux); break;
       case 2:
         break;
       case 3:
@@ -974,12 +973,11 @@ void recordsEdit(List *list){
         run = 0;
         break;
       default:
-        printf("Error, invalid option");
-        break;
+        printf("Error, invalid option"); break;
       }
     }
     else{
-      printf("Error, invalid ID");
+      printf("Error, invalid code");
       break;
     }
   }
@@ -993,7 +991,7 @@ void printGraph(int graph[][20], int size, List *list){
   aux = list->start;
   for (i = 0; i < size; i++) {
     
-    printf("task %d: ", aux->data.id);
+    printf("chores %d: ", aux->data.id);
     for (j = 0; j < size; j++) {
       printf("%d ", graph[i][j]);
     }
@@ -1008,21 +1006,21 @@ void addEdge(int graph[][20], int row, int column, int weight){
 
 void criticalPathMenu(List *list, int graph[][20]){
   int run = 1,option,code,i;
-  int aux= list.range;
+  int aux= list->range;
   Node *chores1,*chores2;
-  printf("\n\tCritical Path\n");
+  printf("\n\tCritical route\n");
   while(run ==1){
-    printf("Please, Choose an option:\n1. add a critical path\n 2. show the graph\n 3. return\n");
+    printf("Select an option:\n1.New critical path\n 2.Show the actual graph\n 3. exit\n");
     scanf("%d", &option);
 
     if(option == 1){
-      printf("Please, enter the id of the initial task: \n");
+      printf("Enter the code of the initial chore: \n");
       scanf("%d",&code);
       if(existChores(list,code)==1){
       chores1 = searchChores(list,code);
       i=0;
       while( i < aux-1){
-        printf("\nPlease, enter the id of the next task: \n");
+        printf("\nPlease, enter the code of the next chore: \n");
         scanf("%d",&code);
         if(existChores(list,code)==1){
           chores2 = searchChores(list, code);
@@ -1032,12 +1030,12 @@ void criticalPathMenu(List *list, int graph[][20]){
         
         }
         else{
-          printf("\nError, the task doesn't exist\n");
+          printf("\nError, the system cannot found the chore\n");
         }
       }
       }
       else{
-        printf("\nError, the task doesn't exist\n");
+        printf("\nError, the system cannot found the chore\n");
       }
     }
     else if(option == 2){
@@ -1144,14 +1142,14 @@ int main() {
 	do{
     printf("\n\tAPTEC \n");
     printf("\n");
-    printf("1- Add and modify task\n");
-    printf("2- Manage documents\n");
-    printf("3- Do a critical path\n");
-    printf("4- Register proyect resourses\n");
+    printf("1- Add or modify chore\n");
+    printf("2- Manage records\n");
+    printf("3- Add a critical route\n");
+    printf("4- Add proyect resources\n");
     printf("5- Work Breakdown Structure\n");
-    printf("6- Fastest route between tasks\n");
+    printf("6- Reccomended route(Fastest)\n");
     printf("0- Exit \n");
-    printf("\n Please, choose an option and press ENTER: ");
+    printf("\nSelect an option and press Enter: ");
     fflush(stdin);
     scanf("%d", &option);
 
@@ -1159,9 +1157,9 @@ int main() {
     switch(option){
       case 1: addModChoresMenu(choresList); break;
       case 2: recordsEdit(choresList);break;
-	  case 3: criticalPathMenu(choresList.range, graph);break;
+	  case 3: criticalPathMenu(choresList, graph);break;
       case 4: ResourceMenu(resourcesList);break;
-      case 5: primMST(graph, choresList.range);break;
+      case 5: primMST(graph, choresList->range);break;
       case 0:
         exit(0); 
         break;
