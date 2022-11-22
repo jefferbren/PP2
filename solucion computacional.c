@@ -1,13 +1,21 @@
 //Scheduled Project 2
-//Jefferson Sanabria Brenes-2022111213,Carlos Alonso Hernandez Corrales 2022291616, Janys
+//Jefferson Sanabria Brenes-2022111213, Carlos Alonso Hernandez Corrales 2022291616, Janys Michelle Torres Agüero 2022008183
 
 //Libraries
+//stdio.h library is used to include the inputs and ouputs related functions.
 #include <stdio.h>
+
+//stdlib.h library is used to work with memory allocations, process controls, etc.
 #include <stdlib.h>
+
+//string.h library is used to work with constants and declarations of several functions and types
 #include <string.h>
+
+//MAX 20 is used to expedite the sizes used
 #define MAX 20
 
 //STRUCTS
+//This structure is made to store the information of the documents associated with chores, called records.
 typedef struct record{
 	int id;
 	char route[75];
@@ -15,18 +23,19 @@ typedef struct record{
 	char type[60];
 }Record;
 
+//This structure is made to simulate the nodes of a binary tree.
 typedef struct leaf{
 	Record data;
 	struct leaf *left;
 	struct leaf *right;
 }Leaf;
 
-
+//This structure is made to simulate a binary tree.
 typedef struct tree{
 	Leaf *root;
 }Tree;
 
-
+//This structure is made to store the information of the projects, called chores.
 typedef struct Chores{
 	int id;
 	int vertex;
@@ -39,6 +48,7 @@ typedef struct Chores{
 	Tree *Tree;
 }Chores;
 
+//This structure is made to store the information of the resources of the chores.
 typedef struct resource{
 	int code;
 	char name[60];
@@ -50,7 +60,7 @@ typedef struct resource{
 }Resource;
 
 
-
+//This structure is made to work with several data as nodes.
 typedef struct node{
 	Chores data;
 	Resource resource;
@@ -58,7 +68,7 @@ typedef struct node{
 }Node;
 
 
-
+//This structure is made to store data in lists.
 typedef struct list{
 	
 int range;
@@ -66,7 +76,7 @@ Node *start;
 
 }List;
 
-//FUNCTIONS OF THE PRJECT
+//Here are the several functions used later in the program, thye are called here so in that way, later they work easier.
 List *newList();
 Tree *newTree();
 Node *newChores(Chores data);
@@ -101,7 +111,13 @@ int printMST(int parent[], int graph[20][20], int size);
 void primMST(int graph[20][20], int size);
 void nullMatrix(int matrix[][20]);
 
-//MAIN MENU
+/*Main console menu that appear once the program is executed
+> Inputs:
+- option (int)
+> Outputs:
+case 1 | case 2 | case 3 | case 4 | case 5 | case 6
+> Restrictions:
+- option must be int */
 int main() {
   int option;
   List *choresList, *resourcesList;
@@ -142,6 +158,7 @@ int main() {
 }
 
 //FUNCTIONS FOR MAKE GRAPHS, NODES AND LISTS
+//This function is used to make new chores.
 Node *newChores(Chores item){
   Node *node =(Node *)malloc(sizeof(Node));
   
@@ -160,6 +177,7 @@ Node *newChores(Chores item){
   return node;
 }
 
+//This function is used to make new resources of chores.
 Node *newResource(Resource item){
 	Node *node = (Node *)malloc(sizeof(Node));
 	
@@ -175,6 +193,7 @@ Node *newResource(Resource item){
 	return node;
 }
 
+//This function is used to make new lists to store the different data.
 List *newList(){
   List *list;
 
@@ -186,6 +205,7 @@ List *newList(){
   return list;
 }
 
+//This function is used to make new binary trees.
 Tree *newTree(){
   Tree *root;
 
@@ -197,6 +217,14 @@ Tree *newTree(){
   return root;
 }
 
+/*This function is used to work with different matrices.
+> Inputs:
+- i (int)
+- j (int)
+> Outputs:
+- matrix
+> Restrictions:
+- i && j must be int*/
 void nullMatrix(int matrix[][20]){
   int i,j;
   for(i = 0; i < 20; i++){
@@ -206,6 +234,13 @@ void nullMatrix(int matrix[][20]){
   }
 }
 
+/*This function is used to evaluate the existence of the different chores.
+> Inputs:
+- values (int)
+> Outputs:
+- values (int)
+> Restrictions:
+- vlues must be int*/
 int existChores(List *list,int choresId){
   Node *aux;
   int values = 0;
@@ -221,6 +256,7 @@ int existChores(List *list,int choresId){
   return values;
 }
 
+//This function is used to search for a specific chore.
 Node *searchChores(List *list, int id){
   Node *aux;
   
@@ -235,7 +271,7 @@ Node *searchChores(List *list, int id){
   return NULL;
 }
 
-
+//This function is used to evaluate the existence of the different records.
 int existRecord(Leaf *tree, int code){
   Leaf *aux = tree;
 
@@ -256,7 +292,14 @@ int existRecord(Leaf *tree, int code){
   }
   
 }
-
+/*This function is used to make the program display the corresponding list.
+> Inputs:
+- i (int)
+> Outputs:
+- list
+> Restrictions:
+- i must be (int)
+*/
 void showList(const List *list, int action){
   Node *aux;
   int i = 1;
@@ -297,12 +340,12 @@ void showList(const List *list, int action){
   
 }
 
-
+//This function is used to make the program print the correspondin record.
 void printRec(Record rec){
   printf("\nId: %d \nRoute: %s \nDescription: \n%s \nType: %s\n", rec.id,rec.route,rec.description,rec.type);
 }
 
-
+//This function is used to make the program display the corresponding tree.
 void showTree(Leaf *tree)
 {
   if (tree != NULL)
@@ -313,7 +356,7 @@ void showTree(Leaf *tree)
   }
 }
 
-
+//This function is used to make the program display the information of the chores, called items.
 void showItemChores(const List *list, int id){
     Node *aux;
     aux = list->start;
@@ -339,12 +382,12 @@ void showItemChores(const List *list, int id){
     printf("\n");
 }
 
+//This function is used to add chores to work with.
 void addChores(List *list, Chores item){
   Node *n, *aux;
 	
-	if(list->start == NULL) //Valida si la list esta vacia
+	if(list->start == NULL) 
 	{
-		//Inserta al start de la list
 		list->start = newChores(item);
         list->range++;
 		return;
@@ -360,6 +403,7 @@ void addChores(List *list, Chores item){
   
 }
 
+//This function is used to add records to work with, necessary as they store chores information.
 void addRecord(Tree *tree, Record rec)
 {
   Leaf *new;
@@ -392,6 +436,7 @@ void addRecord(Tree *tree, Record rec)
   }
 }
 
+//This function is used to add resources to the different chores.
 void addResource(List *list1, Resource resource){
 	Node *n, *aux;
 	
@@ -413,7 +458,7 @@ void addResource(List *list1, Resource resource){
 	
 }
 
-
+//This function is used to modify the information of the different chores.
 void modChores(List *list, int code,Chores input,int action){
     Node *aux;
 
@@ -452,7 +497,12 @@ void modChores(List *list, int code,Chores input,int action){
     }
 }
 
-
+/*This information is used to make the program display the menu to operate the modification of the different chores.
+> Inputs:
+- option (int)
+- id (int)
+> Ouputs:
+- case 1 | case 2 | case 3 | case 4 | case 5 | case 6*/
 void modChoresMenu(List *list){
   int option,id;
   char userInput[300];
@@ -601,18 +651,15 @@ void modChoresMenu(List *list){
   }while(run == 1);
 }
 
-
-
-/*
-Inputs: List (list)
-- 
-Outputs: none
-- 
-Exceptions: 
-- for all tasks exist only one unique id
+/*This function is used to make the program display the menu to operate the addition of chores.
+> Inputs:
+- type (int)
+- run (int)
+> Outputs:
+- chore added
+> Restrictions:
+- type && run must be int
 */
-//Menu for add tasks option
-
 void addChoresMenu(List *list){
     char userInput[300];
     Chores item;
@@ -637,10 +684,8 @@ void addChoresMenu(List *list){
         }
         fflush(stdin);
         printf("Enter a description: ");
-        // For read the input with spaces
         fgets(userInput, sizeof userInput, stdin);
         userInput[strcspn(userInput, "\n")] = 0;
-        // for copy the element
         strcpy(item.description, userInput);
         fflush(stdin);
         printf("Please, select the new type:\n1.Operative chore \n2. Aprobation chore \n3. Contract signature \
@@ -684,6 +729,14 @@ void addChoresMenu(List *list){
 
 }
 
+/*This function is used to make the program display the menu to operate the chores overall.
+> Inputs:
+- run (int)
+> Outputs:
+- case 1 | case 2 | case 3 | case 4
+> Restrictions:
+- run must be int
+*/
 void addModChoresMenu(List *list){
   int run = 1,option;
 
@@ -709,7 +762,12 @@ void addModChoresMenu(List *list){
   }
 }
 
-
+/*This function is used to make the program display the menu to operate the resources of the chores.
+> Inputs:
+- entry (char)
+- run (int)
+> Outputs:
+- resource added*/
 void ResourceMenu(List *list1){
 	Resource item;
 	char entry[50];
@@ -760,7 +818,7 @@ void ResourceMenu(List *list1){
 
 }
 
-
+//This function is used to search for a specific binary tree.
 Leaf* searchTree(Leaf *tree, int id){
 	Leaf *aux = tree;
 	
@@ -779,6 +837,7 @@ Leaf* searchTree(Leaf *tree, int id){
 		return NULL;	
 }
 
+//This function is used to search the previous value in a binary tree.
 Leaf* searchPrev(Leaf *tree, Leaf *prev, int id){
 	Leaf *aux = tree;
 	
@@ -799,6 +858,7 @@ Leaf* searchPrev(Leaf *tree, Leaf *prev, int id){
 		return NULL;	
 }
 
+//This function is used to search for the minimum value in a binary tree.
 Leaf *minimum(Leaf *node){
     Leaf *min;
     min = node;
@@ -814,21 +874,20 @@ Leaf *minimum(Leaf *node){
 
 
 }
+
+//This function is used to make the program simulate the elimination of records as a binary tree.
 Leaf *deleteRecord(Leaf *root, int id)
 {
 	if (root == NULL) return root;
 	
-	// Para saber si es hacia la L (es menor)
 	if (id < root->data.id)
 		root -> left = deleteRecord(root -> left, id);
 	
-	// Para saber si es hacia la R (es mayor)
 	else if (id > root -> data.id)
 		root -> right = deleteRecord(root -> right, id);
 	
 	else
 	{
-		// Si es sencillo o sin hijos
 		if (root -> left == NULL)
 		{
 			Leaf *aux = root -> right;
@@ -842,19 +901,21 @@ Leaf *deleteRecord(Leaf *root, int id)
 			free(root);
 			return aux;
 		}
-		// Si tiene dos hijos
 		Leaf* aux = minimum(root -> right);
 		
-		// Para copiar el id
 		root -> data.id = aux -> data.id;
-		// Para eliminar el id
 		root -> right = deleteRecord(root -> right, aux->data.id);
 	}
 	
 	return root;
 }
 
-
+/* This function is used to make the program display the menu to operate the elimination of records.
+> Inputs:
+- id (int)
+- run (int)
+> Outputs: 
+- record deleted.*/
 void deleteRecordMenu(Tree *tree){
   int id, run = 1;
   Leaf *aux;
@@ -881,7 +942,13 @@ void deleteRecordMenu(Tree *tree){
 
 }
 
-
+/*This function is used to make the program display the menu to operate the modification of the records.
+> Inputs:
+- option (int)
+- code (int)
+- run (int)
+> Outputs:
+- case 1 | case 2 | case 3*/
 void modifyRecordMenu(Tree *tree){
   int option,code, run = 1;
   char input[300];
@@ -954,7 +1021,16 @@ void modifyRecordMenu(Tree *tree){
   }
 }
 
-
+/*This function is used to make the program display the menu to operate the addition of records.
+> Inputs:
+- userInput (char)
+- run (int)
+> Outputs:
+- record added
+> Restrictions:
+- userInput must be char
+- run must be int
+*/
 void addRecordMenu(Node *chores){
   char userInput[300];
   Record item;
@@ -975,10 +1051,8 @@ void addRecordMenu(Node *chores){
     }
     fflush(stdin);
     printf("\nPlease, enter a description: \n");
-    // For read the input with spaces
     fgets(userInput, sizeof userInput, stdin);
     userInput[strcspn(userInput, "\n")] = 0;
-    // for copy the element
     strcpy(item.description, userInput);
     fflush(stdin);
     printf("\nEnter the type of the record: ");
@@ -1001,7 +1075,15 @@ void addRecordMenu(Node *chores){
 }
 
 
-
+/*This function is used to make the program display the menu to operate the records overall
+> Inputs:
+- run (int)
+- option (int)
+- code (int)
+> Outputs:
+- case 1 | case 2 | case 3 | case 5
+> Restrictions:
+- run && option && code must be int*/
 void recordsEdit(List *list){
   int run = 1,option,code;
   Node *aux;
@@ -1037,7 +1119,14 @@ void recordsEdit(List *list){
   
 }
 
-
+/*This function is used to make the program display a specific graph
+> Inputs:
+- i (int)
+- j (int)
+> Outputs:
+- graph printed
+> Restrictions:
+- i && j must be int*/
 void printGraph(int graph[][20], int size, List *list){
   int i, j;
   Node *aux;
@@ -1053,10 +1142,19 @@ void printGraph(int graph[][20], int size, List *list){
   }
 }
 
+//This function is used to add the edges of a graph.
 void addEdge(int graph[][20], int row, int column, int weight){
   graph[row][column] =  weight;
 }
 
+/*This function is used to make the program display the menu to operate the Dijkstra algorithm to find the shortest paths in a graph.
+> Inputs:
+- run (int)
+- option (int)
+- code (int)
+- i (int)
+> Outputs:
+- path printed*/
 void criticalPathMenu(List *list, int graph[][20]){
   int run = 1,option,code,i;
   int aux= list->range;
@@ -1103,12 +1201,17 @@ void criticalPathMenu(List *list, int graph[][20]){
   }
 }
 
-// A utility function to find the vertex with
-// minimum key value, from the set of vertices
-// not yet included in MST
+/*This function is used to search for the vertex with the minimum value.
+> Inputs:
+- min (int)
+- min_index (int)
+- v (int)
+> Outputs:
+- min_index (int)
+> Restrictions:
+- min && min_index must be int*/
 int minKey(int key[], int mstSet[], int range)
 {
-	// Initialize min value
 	int min = INT_MAX, min_index;
 	int v =0;
 	for (v = 0; v < range; v++){
@@ -1120,8 +1223,13 @@ int minKey(int key[], int mstSet[], int range)
 	return min_index;
 }
 
-// A utility function to print the
-// constructed MST stored in parent[]
+/*This function is used to make the program display the corresponding MST
+> Inputs:
+- i (int)
+> Outputs:
+- MST printed
+> Restrictions:
+- i must be int*/
 int printMST(int parent[], int graph[20][20], int size)
 {
 	printf("Edge \tWeight\n");
@@ -1132,57 +1240,33 @@ int printMST(int parent[], int graph[20][20], int size)
   }
 }
 
-// Function to construct and print MST for
-// a graph represented using adjacency
-// matrix representation
+//This function is used to make the program perform the Prim algorithm on the MST
 void primMST(int graph[20][20], int size)
 {
-	// Array to store constructed MST
 	int parent[size];
-	// Key values used to pick minimum weight edge in cut
 	int key[size];
-	// To represent set of vertices included in MST
 	int mstSet[size];
 
-	// Initialize all keys as INFINITE
 	int i =0;
 	for (i = 0; i < size; i++){
 		key[i] = INT_MAX, mstSet[i] = 0;
   }
-	// Always include first 1st vertex in MST.
-	// Make key 0 so that this vertex is picked as first
-	// vertex.
 	key[0] = 0;
-	parent[0] = -1; // First node is always root of MST
+	parent[0] = -1; 
 
-	// The MST will have V vertices
 	int count =0;
 	for (count = 0; count < size - 1; count++) {
-		// Pick the minimum key vertex from the
-		// set of vertices not yet included in MST
 		int u = minKey(key, mstSet, size);
 
-		// Add the picked vertex to the MST Set
 		mstSet[u] = 1;
 
-		// Update key value and parent index of
-		// the adjacent vertices of the picked vertex.
-		// Consider only those vertices which are not
-		// yet included in MST
 		int v=0;
 		for (v = 0; v < size; v++)
 
-			// graph[u][v] is non zero only for adjacent
-			// vertices of m mstSet[v] is false for vertices
-			// not yet included in MST Update the key only
-			// if graph[u][v] is smaller than key[v]
 			if (graph[u][v] && mstSet[v] == 0 && graph[u][v] < key[v]){
 				parent[v] = u, key[v] = graph[u][v];
       }
 	}
 
-	// print the constructed MST
 	printMST(parent, graph, size);
 }
-
-
