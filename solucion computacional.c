@@ -1125,8 +1125,14 @@ void recordsEdit(List *list){
       case 1:
         addRecordMenu(aux); break;
       case 2:
+      	modifyRecordMenu(aux->data.Tree);
         break;
       case 3:
+      	deleteRecordMenu(aux->data.Tree);
+        break;
+        case 4:
+        printf("\nThe tree of records is: \n");
+        showTree(aux->data.Tree->root);
         break;
       case 5:
         run = 0;
