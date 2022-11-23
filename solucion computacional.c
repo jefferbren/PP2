@@ -5,7 +5,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#define MAX 20
+
 
 //STRUCTS
 typedef struct record{
@@ -114,7 +114,7 @@ int main() {
   int option;
   List *choresList, *resourcesList;
   FILE *fileChores;
-  int graph[MAX][MAX];
+  int graph[20][20];
   nullMatrix(graph);
 	choresList = newList();
   	resourcesList = newList();
@@ -1364,7 +1364,7 @@ void Dijkstra(int graph[20][20], int n, int start, int array[2], int proceed[20]
 void nullArray(int array[20]){
   int i;
 
-  for(i = 0;i<MAX;i++){
+  for(i = 0;i<20;i++){
     array[i]= INT_MAX;  
   }
 }
